@@ -13,6 +13,15 @@ Description of all functionalities the application will provide:
   - create the cooking event for others to join - place there an offer of an exact meal they want to cook
   - add a predicted budget of that exact meal per portion
   - join the cooking event somebody else created
+  - Set up user profile
+  - preview user that created a cooking event, his history what he already cooked or joined
+  - Provide recipe rating and/or rate the chef
+  
+ User Types:
+ - Admin
+ - Normal User
+ 
+ Detailed specification and functional requirements will be available in the documents folder.
 
 Schedule: 
     Round 1: Specification, user research, prototypes
