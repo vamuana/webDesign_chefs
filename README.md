@@ -10,7 +10,7 @@ The purpose of the applications is to strengthen the relationships between stude
 
 
 ####  Goals:
-The main goal of this application is to connect the students living in the dormitories by spending their time together while cooking. Any user can become a "main chef" and create a cooking event for others to join. The application will enable the "main chef" to set up an event visible to other users by entering the meal they want to cook and the time frame they are available. The "main chef" should also add a predicted budget of that exact meal per portion, they can discuss details in the chat to set up the way they will split the cost - can either pay by cash during the event or by transfer. Other users will see events listed by the "main chefs," and can easily join any event they want. After such confirmation they will be automatically added to the event chat. To make the decision whether to join the event or not even easier, all users can leave rating to the recipe and all participants of that event(star rating and optional text feedback). Each user that has ever created any event will have a history of his recipes on their profile, that will not only help them to make the process of event creation faster, but also can see the feedback of others on his cooking skills. 
+The main goal of this application is to connect the students living in the dormitories by spending their time together while cooking. Any user can become a "main chef" and create a cooking event for others to join. The application will enable the "main chef" to set up an event visible to other users by entering the meal they want to cook and the time frame they are available. The "main chef" should also add a predicted budget of that exact meal per portion, they can discuss details in the chat to set up the way they will split the cost - can either pay by cash during the event or by transfer. Other users will see events listed by the "main chefs," and can easily join any event they want. After such confirmation they will be automatically added to the event chat. To make the decision whether to join the event or not even easier, all users can leave rating to the recipe and all participants of that event(star rating and optional text feedback). Each user that has ever created any event will have a history of his recipes on their profile, that will not only help them to make the process of event creation faster, but also can see the feedback of others on his cooking skills. (Less words)
 
 ####  Success measures: How can you quantitatively measure whether your site/app is successful? What values of these measure do you want to achieve?
 We can measure it by the star ratings of the users among each other, by the amount of events created and successfuly carried out. We want to have the average star rating close to 5 and the amount of successful events as high as possible.
@@ -26,21 +26,24 @@ Detailed specification and functional requirements will be available in the docu
   - add a predicted budget of that exact meal per portion
   - join the cooking event somebody else created
   - preview user that created a cooking event, his history what he already cooked or joined
-  - Provide recipe rating and rate the main chef and participating chefs (star rating and optional text feedback)
+  - Rate the recipie and the main chef and participating chefs (star rating and optional text feedback)
   - filtering the events based on dormitories, time, cuisine,... and searching for a specific event
-
+(structure based on the kind of user : main chef and people who'll join)
  #### User Types:
  - Admin
  - Normal User
 
 ####  Non-functional requirements: What other requirements do you have? These are often high-level requirements on how the app should behave, interact, perform its functions, be implemented or deployed in terms of performance, security, availability, software quality, documentation, maintainability, etc.
 
+(how fast, secure, usabillity, avalibillity, response time. demonstrate what you know rather than making realisitc specifications )
 
 ####  Schedule: In particular, specify which functions you intend to design, prototype, and test in Round 1, and subsequently implement and test again in Round 2. Also specify which functions you intend to design, implement, and test in Round 3. Of course, the primary function of your site/app should be implemented first.
+
 Schedule: 
     Round 1: Specification, user research, prototypes
   - 6.10. - 13.10. Planning of the project, writing specification vol 1, Creating the two personas
   - 13.10. - 20.10. Creating a design of the application - all subpages as a design
+    ()
   - 20.10. - 10.11. FE and BE - creation of the layut based on design, primary functions - login/sign up, create event, join event, group chat creation
   - Initial submission: 10 Nov 2024
   - Testing session: around 13 Nov 2024
@@ -71,3 +74,12 @@ Schedule:
   - Filip -
   - Róbert -
   - Dario -
+##### Notes
+1.Check measuremnts, user retention, views, come up with some fictive numbers for example no. of people living in dorms. How many people keep using the app after some periods of time. 
+
+2.Check how different recipe websites look like, what kind of interface are users used to. 
+
+3. How do people communicate in different channels and their basic interface to base the messaging functions.
+
+4. Assing the roles including testing leader, persona maker and advocate...
+
