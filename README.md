@@ -83,3 +83,5 @@ Schedule:
 
 4. Assing the roles including testing leader, persona maker and advocate...
 
+##### Personas:
+https://www.canva.com/design/DAGTEaA_fXc/xKze3dv6ClPUfTBA3beHpA/edit?utm_content=DAGTEaA_fXc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
