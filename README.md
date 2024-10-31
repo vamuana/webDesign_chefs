@@ -14,6 +14,9 @@ The main goal of this application is to connect the students living in the dormi
 
 ####  Success measures: How can you quantitatively measure whether your site/app is successful? What values of these measure do you want to achieve?
 We can measure it by the star ratings of the users among each other, by the amount of events created and successfuly carried out. We want to have the average star rating close to 5 and the amount of successful events as high as possible.
+1.Check measuremnts, user retention, views, come up with some fictive numbers for example no. of people living in dorms. How many people keep using the app after some periods of time. NEEDS TO BE IMPLEMENTED HERE
+
+
 
 ####  Competition analysis: The idea that you come up with has probably already been explored and implemented by someone else. Are there any similar web sites/applications? What can you learn from them? What are the things you like/dislike about their approach? What are the users' expectations with this kind of sites/applications (your best guess)? You can analyze competing solutions one by one, but always concisely summarize the important findings of the whole competition analysis. 
 We are not aware of any similar-looking websites or applications, as the main goal of this website is really specific.
@@ -41,10 +44,11 @@ Detailed specification and functional requirements will be available in the docu
 
 Schedule: 
     Round 1: Specification, user research, prototypes
-  - 6.10. - 13.10. Planning of the project, writing specification vol 1, Creating the two personas
-  - 13.10. - 20.10. Creating a design of the application - all subpages as a design
-    ()
-  - 20.10. - 10.11. FE and BE - creation of the layut based on design, primary functions - login/sign up, create event, join event, group chat creation
+  - 6.10. - 13.10. Planning of the project, writing specification vol 1
+  - 13.10. - 20.10. Creating the two personas
+  - 20.10.-31.10. Two use-cases
+  - 31.10. - 5.11. Wireframes and storyboard
+  - 9.11. Finalization of files to be submited
   - Initial submission: 10 Nov 2024
   - Testing session: around 13 Nov 2024
   - Improved submission: 17 Nov 2024
@@ -67,21 +71,21 @@ Schedule:
 
 
 ####  Budget: What will be the overall cost? What will be the cost of each milestone? You can specify the cost in person hours.
-
+Menpower
 
 ####  Split of responsibilities in your team:
-  - Vanesa - 
-  - Filip -
-  - Róbert -
-  - Dario -
+  - Vanesa - Tester
+  - Filip - Leader of the Application
+  - Róbert - Observer
+  - Dario - Testing leader
+    
 ##### Notes
-1.Check measuremnts, user retention, views, come up with some fictive numbers for example no. of people living in dorms. How many people keep using the app after some periods of time. 
+
 
 2.Check how different recipe websites look like, what kind of interface are users used to. 
 
 3. How do people communicate in different channels and their basic interface to base the messaging functions.
 
-4. Assing the roles including testing leader, persona maker and advocate...
 
 ##### Personas:
 https://www.canva.com/design/DAGTEaA_fXc/xKze3dv6ClPUfTBA3beHpA/edit?utm_content=DAGTEaA_fXc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
