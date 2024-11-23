@@ -1,5 +1,5 @@
 # Cook&Meet
-### Specification(In progress)
+### Specification
 
 #### Purpose of the application:
 The purpose of the applications is to strengthen the relationships between students living in the dormitories by spending time together cooking and sharing their meals.
@@ -131,12 +131,12 @@ Schedule:
   - Team review: 20 Nov 2024
 
     Round 2: App Version 1 (60 Hours)
-  - 20.11. - 23.11. Improving specification vol 2
-  - 24.11. - Submission of updated schedule
-  - 25. - 30.11. - Initialization of App - setting up the technical part of the porject to prepare the app for launching
-  - 1.12. - Internal meeting
-  - 1. - 5.12. - Primary functions 1- Creating recipe (adding ingredients, description, directions, saving the new recipe, confirmation of creation)
-  - 6. - 10.12. - Primary functions 2 - Creating an event (choosing a recipe, setting the time, date, estimated price and max amount of attendees, confirmation of creation) + login/register(setting up a new profile)
+  - 20.11.- 23.11. Improving specification vol 2
+  - 24.11.- Submission of updated schedule
+  - 25.-30.11. - Initialization of App - setting up the technical part of the porject to prepare the app for launching
+  - 1.12.-Internal meeting
+  - 1.-5.12. - Primary functions 1- Creating recipe (adding ingredients, description, directions, saving the new recipe, confirmation of creation)
+  - 6.-10.12. - Primary functions 2 - Creating an event (choosing a recipe, setting the time, date, estimated price and max amount of attendees, confirmation of creation) + login/register(setting up a new profile)
   - Updated specs submission: 24 Nov 2024
   - Testing session: 11 Dec 2024
   - Submission: 15 Dec 2024
@@ -150,11 +150,14 @@ Schedule:
   - Team review: 21 Jan 2024
 
 ####  Split of responsibilities in your team:
-  - Vanesa - Tester
+  - Vanesa - Operator
   - Filip - Leader of the Application
   - Róbert - Observer
-  - Dario - Testing leader
+  - Dario - Testing leader and moderator
 
 
 ##### Personas:
 https://www.canva.com/design/DAGTEaA_fXc/xKze3dv6ClPUfTBA3beHpA/edit?utm_content=DAGTEaA_fXc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+
+##### Wireframes:
+https://www.canva.com/design/DAGUYowK_jk/jqAzyOnOM4pNeptQ9ydkOw/edit?utm_content=DAGUYowK_jk&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
