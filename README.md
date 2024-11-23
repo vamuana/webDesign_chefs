@@ -1,4 +1,3 @@
-####  TODO
 # Cook&Meet
 ### Specification(In progress)
 
@@ -132,8 +131,12 @@ Schedule:
   - Team review: 20 Nov 2024
 
     Round 2: App Version 1 (60 Hours)
-  - 20.11. - 23.11. Writing specification vol 2
-  - 23.11. - 10.12. Improving a prototype site 2 - secondary functions - showing the list of previous events/recipes with feedback/ratings, improvement of primary functoins
+  - 20.11. - 23.11. Improving specification vol 2
+  - 24.11. - Submission of updated schedule
+  - 25. - 30.11. - Initialization of App - setting up the technical part of the porject to prepare the app for launching
+  - 1.12. - Internal meeting
+  - 1. - 5.12. - Primary functions 1- Creating recipe (adding ingredients, description, directions, saving the new recipe, confirmation of creation)
+  - 6. - 10.12. - Primary functions 2 - Creating an event (choosing a recipe, setting the time, date, estimated price and max amount of attendees, confirmation of creation) + login/register(setting up a new profile)
   - Updated specs submission: 24 Nov 2024
   - Testing session: 11 Dec 2024
   - Submission: 15 Dec 2024
