@@ -77,7 +77,7 @@ export default function NavBar() {
       <AppBar
         component="nav"
         sx={{
-          backgroundColor: '#97BC62',
+          backgroundColor: '#93E9BE',
           color: 'white',
         }}
       >
@@ -100,7 +100,7 @@ export default function NavBar() {
               sx={{
                 flexGrow: 1,
                 display: { xs: "none", sm: "block" },
-                color: "white",
+                color: "#3B9778",
                 fontFamily: "Titillium Web",
                 fontWeight: 900,
               }}
@@ -115,7 +115,7 @@ export default function NavBar() {
               component="div"
               sx={{
                 mt: -1,
-                color: "white",
+                color: "#3B9778",
                 fontFamily: "Titillium Web",
                 fontWeight: 400,
                 fontSize: "0.9rem",

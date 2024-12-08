@@ -1,114 +1,49 @@
-import NavBar from './Navbar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import React from 'react';
+import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
 
 export default function HomePageMenu() {
-  return (
-    <Box sx={{ display: 'block', minHeight: '100vh', backgroundColor: '#F5F5F5' }}>
-      <NavBar />
-      <Box
-        component="main"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          textAlign: "center",
-          height: "calc(100vh - 64px)", // The screen height - Navbar height
-          px: 3,
-        }}
-      >
-        <Toolbar />
+    return (
+        <div className="min-h-screen bg-gray-100 overflow-hidden">
+            <Navbar />
+            <main className="flex flex-col items-center bg-gray-100" style={{ paddingTop: '64px', height: 'calc(100vh - 64px)' }}>
+                <h1 className="text-3xl font-bold mb-6 text-green-700">I want to...</h1>
+                <div className="grid grid-cols-2 gap-12 w-3/4">
+                    {/* Create Section */}
+                    <Link
+                        to="/create-event"
+                        style={{ backgroundColor: '#3D9879' }}
+                        className="text-white rounded-lg shadow-lg transition duration-300 transform hover:scale-110 hover:bg-[#357D68] flex flex-col items-center py-20 px-16"
+                    >
+                        <div className="text-center">
+                            <img
+                                src="/src/assets/chef.png"
+                                alt="Create"
+                                className="mb-4 h-56"
+                            />
+                            <h2 className="text-5xl font-bold">CREATE</h2>
+                            <p className="text-3xl">a cooking event</p>
+                        </div>
+                    </Link>
 
-        <Typography
-          variant="h4"
-          sx={{ fontFamily: "Titillium Web", fontWeight: 700 }}
-          gutterBottom
-        >
-          Welcome to Cook&Meet
-        </Typography>
-        <Typography
-          variant="h5"
-          sx={{
-            fontFamily: "Titillium Web",
-            fontWeight: 500,
-            fontStyle: "italic",
-          }}
-          gutterBottom
-        >
-          - Discover the world of great flavors and friendly encounters!
-        </Typography>
-
-        <Box
-          sx={{
-            mt: 5,
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-            width: "100%",
-            maxWidth: "400px",
-          }}
-        >
-          <Button
-            variant="contained"
-            component={Link}
-            to="/join-event"
-            sx={{
-              backgroundColor: "#7fa845",
-              fontWeight: "bold",
-              padding: "12px 24px",
-              "&:hover": { backgroundColor: "#2C5F2D" },
-            }}
-          >
-            Join Event
-          </Button>
-
-          <Button
-            variant="contained"
-            component={Link}
-            to="/create-event"
-            sx={{
-              backgroundColor: "#7fa845",
-              fontWeight: "bold",
-              padding: "12px 24px",
-              "&:hover": { backgroundColor: "#2C5F2D" },
-            }}
-          >
-            Create Event
-          </Button>
-
-          <Button
-            variant="contained"
-            component={Link}
-            to="/create-recipe"
-            sx={{
-              backgroundColor: "#7fa845",
-              fontWeight: "bold",
-              padding: "12px 24px",
-              "&:hover": { backgroundColor: "#2C5F2D" },
-            }}
-          >
-            Create Recipe
-          </Button>
-
-          <Button
-            variant="contained"
-            component={Link}
-            to="/my-profile"
-            sx={{
-              backgroundColor: "#7fa845",
-              fontWeight: "bold",
-              padding: "12px 24px",
-              "&:hover": { backgroundColor: "#2C5F2D" },
-            }}
-          >
-            My Profile
-          </Button>
-        </Box>
-      </Box>
-    </Box>
-  );
+                    {/* Join Section */}
+                    <Link
+                        to="/join-event"
+                        style={{ backgroundColor: '#F4B18C' }}
+                        className="text-white rounded-lg shadow-lg transition duration-300 transform hover:scale-110 hover:bg-[#D8977C] flex flex-col items-center py-20 px-16"
+                    >
+                        <div className="text-center">
+                            <img
+                                src="/src/assets/cooking.png"
+                                alt="Join"
+                                className="mb-4 h-56"
+                            />
+                            <h2 className="text-5xl font-bold">JOIN</h2>
+                            <p className="text-3xl">a cooking event</p>
+                        </div>
+                    </Link>
+                </div>
+            </main>
+        </div>
+    );
 }

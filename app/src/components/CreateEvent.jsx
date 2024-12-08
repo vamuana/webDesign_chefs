@@ -55,6 +55,7 @@ export default function CreateEvent() {
         estimatedPrice: ''
     });
     const [isEventCreated, setIsEventCreated] = useState(false);
+    const [formError, setFormError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -86,7 +87,26 @@ export default function CreateEvent() {
         }
     };
 
+    const validateForm = () => {
+        if (!selectedRecipe) {
+            setFormError("Please select a recipe.");
+            return false;
+        }
+
+        if (!eventDetails.date || !eventDetails.maxAttendees || !eventDetails.timeRange.start || !eventDetails.timeRange.end || !eventDetails.estimatedPrice) {
+            setFormError("All fields are required.");
+            return false;
+        }
+
+        setFormError(null);
+        return true;
+    };
+
     const handleCreateEvent = () => {
+        if (!validateForm()) {
+            return;
+        }
+
         const eventData = {
             recipeId: selectedRecipe,
             ...eventDetails,
@@ -158,6 +178,7 @@ export default function CreateEvent() {
                     <section className="w-1/2 bg-white shadow-md rounded-lg p-6 flex flex-col" style={{ height: '100%' }}>
                         <div className="flex-1 overflow-y-auto">
                             <h2 className="text-xl font-semibold mb-6 text-green-600">Event Details</h2>
+                            {formError && <p className="text-red-500 mb-4">{formError}</p>}
                             <form className="space-y-6">
                                 <div>
                                     <label htmlFor="date" className="block font-medium text-gray-700">Date</label>
