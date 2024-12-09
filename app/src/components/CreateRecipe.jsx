@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import NavBar from './Navbar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -8,20 +8,23 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CloseIcon from '@mui/icons-material/Close';
 import Alert from './Alert';
 import Success from './Success';
 
 const RecipeForm = () => {
-  const [error, setError] = useState(null); 
-  const [successMsg, setSuccessMsg] = useState(null); 
+  const [error, setError] = useState(null);
+  const [successMsg, setSuccessMsg] = useState(null);
   const [recipe, setRecipe] = useState({
     name: '',
     ingredients: [''],
     description: '',
     directions: '',
+    photo: null,
   });
-  const [message, setMessage] = useState('');
-  const [alertType, setAlertType] = useState('');
+  const [isHovered, setIsHovered] = useState(false);
+  const fileInputRef = useRef(null);
+  const [formError, setFormError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,19 +46,73 @@ const RecipeForm = () => {
     setRecipe((prev) => ({ ...prev, ingredients: newIngredients }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setRecipe((prev) => ({ ...prev, photo: URL.createObjectURL(file) }));
+    }
+  };
+
+  const handleRemovePhoto = () => {
+    setRecipe((prev) => ({ ...prev, photo: null }));
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
+    if (!recipe.name) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      setFormError("Please enter the recipe name!");
+      setTimeout(() => setError(null), 3000);
+      return;
+    }
+  
+    if (recipe.ingredients.length === 0 || recipe.ingredients.some((ingredient) => !ingredient)) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      setFormError("Please add at least one ingredient!");
+      return;
+    }
+  
+    if (!recipe.description) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      setFormError("Please enter the recipe description!");
+      return;
+    }
+  
+    if (!recipe.directions) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      setFormError("Please enter the recipe directions!");
+      return;
+    }
     if (!recipe.name || recipe.ingredients.length === 0 || !recipe.description || !recipe.directions) {
-      setError("Please fill in all fields!");
-        setTimeout(() => setError(null), 3000);
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      setFormError("Please fill in all fields!");
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
     } else {
+      setFormError(null);
       setSuccessMsg(`Recipe "${recipe.name}" created successfully!`);
-      setTimeout(() => setSuccessMsg(null), 3000);
+      setTimeout(() => setSuccessMsg(null), 4000);
       window.scrollTo({
         top: 0,
         behavior: 'smooth',
@@ -65,10 +122,12 @@ const RecipeForm = () => {
         ingredients: [''],
         description: '',
         directions: '',
+        photo: null,
       });
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
-    
-    setTimeout(() => setMessage(''), 3000);
   };
 
   return (
@@ -87,12 +146,14 @@ const RecipeForm = () => {
           backgroundColor: '#f5f5f5',
         }}
       >
-        <Typography variant="h4" component="h1" gutterBottom>
+        <Typography variant="h4" sx={{ fontFamily: "Titillium Web", fontWeight: 700 }} gutterBottom>
           Create a Recipe
         </Typography>
-
+        {formError && <p className="text-red-500 mb-4">{formError}</p>}
         <form onSubmit={handleSubmit}>
+          {/* Title */}
           <TextField
+            id="recipe-name"
             fullWidth
             label="Recipe Name"
             name="name"
@@ -102,7 +163,73 @@ const RecipeForm = () => {
             margin="normal"
             required
           />
-          <Typography variant="h6" component="h2" sx={{ marginY: 2 }}>
+
+          {/* Photo Upload */}
+          <Box sx={{ marginBottom: 2 }}>
+          <Typography
+          variant="h6"
+          sx={{ fontFamily: "Titillium Web", fontWeight: 700 }}
+          gutterBottom
+        >
+              Recipe Photo
+            </Typography>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              style={{ display: 'none' }}
+              id="upload-photo"
+              ref={fileInputRef}
+            />
+            <label htmlFor="upload-photo">
+              <Button variant="contained" component="span">
+                Upload Photo
+              </Button>
+            </label>
+            {recipe.photo && (
+              <Box
+                sx={{
+                  position: 'relative',
+                  marginTop: 2,
+                }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                <img
+                  src={recipe.photo}
+                  alt="Recipe Preview"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    maxHeight: '300px',
+                    objectFit: 'cover',
+                    borderRadius: '8px',
+                  }}
+                />
+                {isHovered && (
+                  <IconButton
+                    onClick={handleRemovePhoto}
+                    color="error"
+                    sx={{
+                      position: 'absolute',
+                      top: 8,
+                      right: 8,
+                      backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                      '&:hover': {
+                        backgroundColor: 'rgba(255, 255, 255, 1)',
+                      },
+                    }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                )}
+              </Box>
+            )}
+          </Box>
+
+          {/* Ingredients */}
+          <Box id="ingredients-section">
+          <Typography variant="h6" sx={{ fontFamily: "Titillium Web", fontWeight: 700 }} gutterBottom>
             Ingredients
           </Typography>
           {recipe.ingredients.map((ingredient, index) => (
@@ -138,14 +265,18 @@ const RecipeForm = () => {
             variant="contained"
             startIcon={<AddCircleIcon />}
             sx={{
-              marginTop: 1,
-              backgroundColor: '#7fa845',
-              '&:hover': { backgroundColor: '#2C5F2D' },
+              marginTop: 3,
+              fontWeight: 'bold',
+              backgroundColor: '#15803D',
             }}
+            className="bg-green-700 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-600"
           >
             Add Ingredient
           </Button>
+          </Box>
+          {/* Description */}
           <TextField
+            id="recipe-description"
             fullWidth
             label="Description"
             name="description"
@@ -157,7 +288,10 @@ const RecipeForm = () => {
             rows={3}
             required
           />
+
+          {/* Directions */}
           <TextField
+            id="recipe-directions"
             fullWidth
             label="Directions"
             name="directions"
@@ -169,17 +303,17 @@ const RecipeForm = () => {
             rows={4}
             required
           />
+
           <Button
-            type="submit"
+            type="button"
             variant="contained"
-            color="primary"
-            fullWidth
+            onClick={handleSubmit}
             sx={{
               marginTop: 3,
               fontWeight: 'bold',
-              backgroundColor: '#7fa845',
-              '&:hover': { backgroundColor: '#2C5F2D' },
+              backgroundColor: '#15803D',
             }}
+            className="w-full bg-green-700 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-600"
           >
             Save Recipe
           </Button>
@@ -190,3 +324,4 @@ const RecipeForm = () => {
 };
 
 export default RecipeForm;
+
