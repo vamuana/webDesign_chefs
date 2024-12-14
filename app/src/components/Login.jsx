@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {useDispatch, useSelector, shallowEqual} from 'react-redux'; // TODO USE FOR GLOBAL STATES AFTERWARDS WHEN USER IS LOGGED IN
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import NavBar from './Navbar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -27,10 +27,12 @@ export default function Login() {
   const handleName = (e) => setName(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
 
-  const [isLoggedIn] = useSelector((state) => [state.global.isLoggedIn], shallowEqual); // TODO REDUX
+  const [isLoggedIn] = useSelector((state) => [state.global.isLoggedIn], shallowEqual);
+  const [userName] = useSelector((state) => [state.global.name], shallowEqual); 
 
+  const navigate = useNavigate();
 
-  useEffect(() => {}, [name, password, successMsg, error]);
+  useEffect(() => {}, [name, password, isLoggedIn, successMsg, error]);
 
   const handleLogin = async () => {
     const uploadData = new FormData();
@@ -133,39 +135,50 @@ export default function Login() {
           Log In Page
         </Typography>
 
-        {/* UserName */}
-        <TextField
-          id="user-name"
-          label="Your Username"
-          variant="outlined"
-          value={name}
-          onChange={handleName}
-          sx={{
-            mt: 2,
-            width: "300px",
-            backgroundColor: "white",
-            borderRadius: "8px",
-          }}
-        />
+      {!isLoggedIn ? (
+        <>
+          {/* UserName */}
+          <TextField
+            id="user-name"
+            label="Your Username"
+            variant="outlined"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            sx={{
+              mt: 2,
+              width: "300px",
+              backgroundColor: "white",
+              borderRadius: "8px",
+            }}
+          />
 
-        {/* Password */}
-        <TextField
-          id="password-input"
-          label="Your Password"
-          type="password"
-          variant="outlined"
-          value={password}
-          onChange={handlePassword}
-          sx={{
-            mt: 2,
-            width: "300px",
-            backgroundColor: "white",
-            borderRadius: "8px",
-          }}
-        />
+          {/* Password */}
+          <TextField
+            id="password-input"
+            label="Your Password"
+            type="password"
+            variant="outlined"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            sx={{
+              mt: 2,
+              width: "300px",
+              backgroundColor: "white",
+              borderRadius: "8px",
+            }}
+          />
+        </>
+      ) : (
 
-        {getLoginButton()}
-        {getRegisterButton()}
+      <div className="text-center mt-8">
+          <h3 className="text-4xl font-extrabold text-green-700 drop-shadow-md animate-fadeIn">
+              Welcome back, <span className="text-green-900 underline">{userName}</span>!
+          </h3>
+      </div>
+      )}
+
+        {isLoggedIn ? null :getLoginButton()}
+        {isLoggedIn ? null :getRegisterButton()}
 
         {/* TODO ADD VALIDATION HERE ON LOGIN (AND REPLACE THE GETLOGIN BUTTON DOWN IN RETURN) IN CASE THE USER IS ALREADY LOGGED IN!
         {isLoggedIn ? null :  getLoginButton()}
