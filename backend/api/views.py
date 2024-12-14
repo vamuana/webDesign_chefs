@@ -4,6 +4,7 @@ from . models import *
 from . serializer import *
 from rest_framework.response import Response
 from rest_framework import generics, status
+from django.contrib.auth.hashers import check_password
 # Create your views here.
 
 class UserView(generics.ListAPIView):
@@ -40,14 +41,11 @@ class RegisterUserView(APIView):
             self.request.session.create()
 
         serializer = self.serializer_class(data=request.data)
-        print("is valid: ", serializer.is_valid())
-        print("serializer data: ", serializer.data)
         if serializer.is_valid():
             username = serializer.data.get('username')
             password = serializer.data.get('password')
             queryset = User.objects.filter(username=username)
             
-            print("e", queryset.exists())
             if queryset.exists():
                 return Response(
                     {'status': 'error', 'message': 'Username already taken.'},
@@ -60,7 +58,26 @@ class RegisterUserView(APIView):
             user.save()
             return Response({'status': 'User Registered successfully'})
         else: 
-           print("ss", serializer.data)
            return Response({'status': 'Invalid data', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         
-        
+class AuthorizeUser(APIView):
+    serializer_class = UserSerializer
+
+    def post(self, request, format=None):
+        if not self.request.session.exists(self.request.session.session_key):
+            self.request.session.create()
+
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            username = serializer.data.get('username')
+            password = serializer.data.get('password')
+            queryset = User.objects.filter(username=username)
+
+            if queryset.exists():
+                user = queryset[0]
+                if (user.password == password):
+                    return Response({'status': 'User logged in successfully.'}, status=status.HTTP_200_OK)
+                return Response({'status': 'Invalid password', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)  
+            return Response({'status': 'Invalid username', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)               
+        return Response({'status': 'Invalid data', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
