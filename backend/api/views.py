@@ -81,3 +81,46 @@ class AuthorizeUser(APIView):
                 return Response({'status': 'Invalid password', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)  
             return Response({'status': 'Invalid username', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)               
         return Response({'status': 'Invalid data', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    
+# Recipes
+
+class IngredientsView(generics.ListAPIView):
+    queryset = Ingredient.objects.all()
+    serializer_class = IngredientSerializer
+
+class RecipesView(generics.ListAPIView):
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
+
+class RecipeCreateView(APIView):
+    def post(self, request, format=None):
+        data = request.data
+        title = data.get('title')
+        description = data.get('description')
+        secondary_description = data.get('secondary_description', '')
+        ingredients_data = data.get('ingredients', [])
+        image = request.FILES.get('image', None)
+
+        if not title or not description or not ingredients_data:
+            return Response(
+                {"error": "Title, description, and at least one ingredient are required."}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Vytvorenie receptu
+        recipe = Recipe.objects.create(
+            title=title,
+            description=description,
+            secondary_description=secondary_description,
+            image=image
+        )
+
+        # Pridanie ingrediencií
+        for ingredient in ingredients_data:
+            ingredient_obj, created = Ingredient.objects.get_or_create(name=ingredient['name'])
+            recipe.ingredients.add(ingredient_obj)
+
+        recipe.save()
+
+        serializer = RecipeSerializer(recipe)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

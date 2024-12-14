@@ -25,4 +25,8 @@ urlpatterns = [
     path('login/', LoginUserView.as_view()),
     path('register/', RegisterUserView.as_view()),
     path('authenticate/', AuthorizeUser.as_view()),
+    # Recipes
+    path('ingredients/', IngredientsView.as_view()),
+    path('recipes/', RecipesView.as_view()),
+    path('create-recipe/', RecipeCreateView.as_view()),
 ]
