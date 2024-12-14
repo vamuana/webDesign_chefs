@@ -21,9 +21,8 @@ export default function Login() {
   const [error, setError] = useState(null); // error message for ERROR component pop up when wrong credentials are entered
 
   // hooks
-  const dispatch = useDispatch(); // will be used for handling users login under a session (so in case he clicks on another page he does not get logged out)
+  const dispatch = useDispatch();
 
-  // methods - TODO extract into separate component if necessary
   const handleName = (e) => setName(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
 
@@ -45,7 +44,6 @@ export default function Login() {
     .then((response) => { 
         if (response.ok) {
             console.log("Logged in successfully!");
-            // dispatch({type: SET_ENTERED, value: true});
             dispatch({type: SET_LOGGED_IN, value: true});
             dispatch({type: SET_NAME, value: name});
             setSuccessMsg("Logged in successfully!");
@@ -60,7 +58,7 @@ export default function Login() {
         setPassword("");
         return response.json();
     })
-    .then((data) => { // todo add validation msg and error msg
+    .then((data) => { 
         console.log("Response data: ", data);
     })
     .catch((error) => {
@@ -179,11 +177,6 @@ export default function Login() {
 
         {isLoggedIn ? null :getLoginButton()}
         {isLoggedIn ? null :getRegisterButton()}
-
-        {/* TODO ADD VALIDATION HERE ON LOGIN (AND REPLACE THE GETLOGIN BUTTON DOWN IN RETURN) IN CASE THE USER IS ALREADY LOGGED IN!
-        {isLoggedIn ? null :  getLoginButton()}
-        TODO - BACK BUTTON TO MAIN MENU ONCE PAGE IS PROPERLY DONE. 
-        */}
       </Box>
     </Box>
   );
