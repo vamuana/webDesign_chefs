@@ -1,11 +1,13 @@
 from rest_framework import serializers
 from . models import *
 
+# Users
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model=User
         fields=['username', 'password']
 
+# Recipes
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
@@ -19,6 +21,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = ['id', 'title', 'description', 'secondary_description', 'ingredients', 'image']
 
+# Event(s)
 class EventSerializer(serializers.ModelSerializer):
     recipe = serializers.PrimaryKeyRelatedField(queryset=Recipe.objects.all())
 

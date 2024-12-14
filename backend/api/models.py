@@ -19,6 +19,8 @@ class Recipe(models.Model):
     ingredients = models.ManyToManyField(Ingredient, related_name='recipes')
     image = models.ImageField(upload_to='recipes/', blank=True, null=True)
 
+# Event(s)
+
 class Event(models.Model):
     date = models.DateField(default=now)
     max_attendees = models.PositiveIntegerField()
