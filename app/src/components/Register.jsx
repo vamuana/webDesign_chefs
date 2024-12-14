@@ -23,29 +23,40 @@ export default function Register() {
 
   const handleRegister = async () => {
     const uploadData = new FormData();
-    uploadData.append('username', name);
+    uploadData.append('name', name);
     uploadData.append('password', password);
-
-    fetch("http://127.0.0.1:8000/api/register/", { 
-      method: 'POST',
-      body: uploadData,
+    fetch("/api/register", {
+        method: 'POST',
+        headers: { 
+            'X-CSRFToken': csrftoken, // include the CSRF token in the headers
+        },
+        body: uploadData
     })
-      .then((response) => {
+    .then((response) => { 
         if (response.ok) {
-          setSuccessMsg("Registered successfully!");
-          setTimeout(() => setSuccessMsg(null), 3000);
+            setSuccessMsg("Registered successful!ly");
+            setTimeout(() => {
+                setSuccessMsg(null);
+              }, 3000);
         } else {
-          setError("Username already taken!");
-          setTimeout(() => setError(null), 3000);
+            setError("Username already taken!");
+            setTimeout(() => {
+                setError(null);
+              }, 3000);
         }
         setName("");
         setPassword("");
+
         return response.json();
-      })
-      .catch((error) => {
-        console.error("ERROR:", error);
-      });
-  };
+    })
+    .then((data) => { // todo add validation msg and error msg
+        console.log("Response data: ", data);
+    })
+    .catch((error) => {
+        console.log("ERROR");
+        console.error(error);
+    });
+}
 
   const getRegisterButton = () => (
     <Button

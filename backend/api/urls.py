@@ -20,5 +20,8 @@ from django.conf.urls import *
 from api.views import *
 
 urlpatterns = [
+    # Users
+    path('users/', UserView.as_view()),
     path('login/', LoginUserView.as_view()),
+    path('register/', RegisterUserView.as_view()),
 ]
