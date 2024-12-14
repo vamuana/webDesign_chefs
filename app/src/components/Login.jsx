@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import {useDispatch} from 'react-redux'; // TODO USE FOR GLOBAL STATES AFTERWARDS WHEN USER IS LOGGED IN
 import NavBar from './Navbar';
 import Toolbar from '@mui/material/Toolbar';
@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import Alert from './Alert';
+import Success from './Success';
 
 export default function Login() {
   // variables
@@ -13,8 +15,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   
   // TODO
-  // const [successMsg, setSuccessMsg] = useState(null); // message for success component pop up when credentials entered correctly
-  // const [error, setError] = useState(null); // error message for ERROR component pop up when wrong credentials are entered
+  const [successMsg, setSuccessMsg] = useState(null); // message for success component pop up when credentials entered correctly
+  const [error, setError] = useState(null); // error message for ERROR component pop up when wrong credentials are entered
 
   // hooks
   // const dispatch = useDispatch(); // will be used for handling users login under a session (so in case he clicks on another page he does not get logged out)
@@ -23,11 +25,44 @@ export default function Login() {
   const handleName = (e) => setName(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
 
-  // TODO login handler when BE is created (DO NOT REMOVE ASYNC AND TIMEOUT DUE TO DB AND ERROR COMPONENT!)
+  // const [isLoggedIn] = useSelector((state) => [state.global.isLoggedIn], shallowEqual); // TODO REDUX
+
+
+  useEffect(() => {}, [name, password, successMsg, error]);
+
   const handleLogin = async () => {
-    console.log("Login attempt:", { name, password });
-    setName("");
-    setPassword("");
+    const uploadData = new FormData();
+    uploadData.append('username', name);
+    uploadData.append('password', password);
+    fetch("http://127.0.0.1:8000/api/authenticate/", {
+        method: 'POST',
+        body: uploadData
+    })
+    .then((response) => { 
+        if (response.ok) {
+            console.log("Logged in successfully!");
+            // dispatch({type: SET_ENTERED, value: true});
+            // dispatch({type: SET_LOGGED_IN, value: true});
+            // dispatch({type: SET_NAME, value: name});
+            setSuccessMsg("Logged in successfully!");
+            navigate("/");
+        } else {
+            setError("Wrong credentials!");
+            setTimeout(() => {
+                setError(null);
+              }, 3000);
+        }
+        setName("");
+        setPassword("");
+        return response.json();
+    })
+    .then((data) => { // todo add validation msg and error msg
+        console.log("Response data: ", data);
+    })
+    .catch((error) => {
+        console.log("ERROR");
+        console.error(error);
+    });
   };
 
   const getLoginButton = () => {
@@ -81,6 +116,9 @@ export default function Login() {
         }}
       >
         <Toolbar />
+
+        {successMsg != null ? <div className='flex flex-col gap-4'><Success msg={successMsg}/></div> : null}
+        {error != null ? <div className='flex flex-col gap-4'><Alert msg={error}/></div> : null}
 
         {/* Header */}
         <Typography
