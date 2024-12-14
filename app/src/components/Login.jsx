@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import {useDispatch} from 'react-redux'; // TODO USE FOR GLOBAL STATES AFTERWARDS WHEN USER IS LOGGED IN
+import {useDispatch, useSelector, shallowEqual} from 'react-redux'; // TODO USE FOR GLOBAL STATES AFTERWARDS WHEN USER IS LOGGED IN
 import NavBar from './Navbar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -8,6 +8,8 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Alert from './Alert';
 import Success from './Success';
+import { useNavigate } from 'react-router-dom';
+import { SET_LOGGED_IN, SET_NAME } from '../redux/actions/action';
 
 export default function Login() {
   // variables
@@ -19,13 +21,13 @@ export default function Login() {
   const [error, setError] = useState(null); // error message for ERROR component pop up when wrong credentials are entered
 
   // hooks
-  // const dispatch = useDispatch(); // will be used for handling users login under a session (so in case he clicks on another page he does not get logged out)
+  const dispatch = useDispatch(); // will be used for handling users login under a session (so in case he clicks on another page he does not get logged out)
 
   // methods - TODO extract into separate component if necessary
   const handleName = (e) => setName(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
 
-  // const [isLoggedIn] = useSelector((state) => [state.global.isLoggedIn], shallowEqual); // TODO REDUX
+  const [isLoggedIn] = useSelector((state) => [state.global.isLoggedIn], shallowEqual); // TODO REDUX
 
 
   useEffect(() => {}, [name, password, successMsg, error]);
@@ -42,8 +44,8 @@ export default function Login() {
         if (response.ok) {
             console.log("Logged in successfully!");
             // dispatch({type: SET_ENTERED, value: true});
-            // dispatch({type: SET_LOGGED_IN, value: true});
-            // dispatch({type: SET_NAME, value: name});
+            dispatch({type: SET_LOGGED_IN, value: true});
+            dispatch({type: SET_NAME, value: name});
             setSuccessMsg("Logged in successfully!");
             navigate("/");
         } else {
@@ -100,6 +102,8 @@ export default function Login() {
       </Button>
     );
   };
+
+  console.log("Current login state:", isLoggedIn);
 
   return (
     <Box sx={{ minHeight: "100vh", backgroundColor: "#F5F5F5" }}>
