@@ -29,4 +29,9 @@ urlpatterns = [
     path('ingredients/', IngredientsView.as_view()),
     path('recipes/', RecipesView.as_view()),
     path('create-recipe/', RecipeCreateView.as_view()),
+    # events
+    path('events/', EventsView.as_view()),
+    path('create-event/', EventCreateView.as_view()),
+    path('join-event/<int:pk>/', EventJoinView.as_view()),
+    path('leave-event/<int:pk>/', EventLeaveView.as_view()),
 ]

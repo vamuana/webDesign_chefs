@@ -18,3 +18,14 @@ class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = ['id', 'title', 'description', 'secondary_description', 'ingredients', 'image']
+
+class EventSerializer(serializers.ModelSerializer):
+    recipe = serializers.PrimaryKeyRelatedField(queryset=Recipe.objects.all())
+
+    class Meta:
+        model = Event
+        fields = [
+            'id', 'date', 'max_attendees', 
+            'registered_attendees', 'time_range', 
+            'price', 'recipe'
+        ]

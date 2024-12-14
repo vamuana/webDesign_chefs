@@ -124,3 +124,64 @@ class RecipeCreateView(APIView):
 
         serializer = RecipeSerializer(recipe)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+# Events 
+class EventsView(generics.ListAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+
+class EventCreateView(APIView):
+    def post(self, request, format=None):
+        serializer = EventSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(
+            {"error": "Invalid data", "details": serializer.errors}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+class EventJoinView(APIView):
+    def post(self, request, pk, format=None):
+        try:
+            event = Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            return Response(
+                {"error": "Event not found"}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if event.registered_attendees >= event.max_attendees:
+            return Response(
+                {"error": "The event is already full"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        event.registered_attendees += 1
+        event.save()
+
+        serializer = EventSerializer(event)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class EventLeaveView(APIView):
+    def post(self, request, pk, format=None):
+        try:
+            event = Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            return Response(
+                {"error": "Event not found"}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if event.registered_attendees <= 0:
+            return Response(
+                {"error": "No attendees to remove"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        event.registered_attendees -= 1
+        event.save()
+
+        serializer = EventSerializer(event)
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now
 
 # Create your models here.
 
@@ -17,3 +18,11 @@ class Recipe(models.Model):
     secondary_description = models.TextField(blank=True, null=True)
     ingredients = models.ManyToManyField(Ingredient, related_name='recipes')
     image = models.ImageField(upload_to='recipes/', blank=True, null=True)
+
+class Event(models.Model):
+    date = models.DateField(default=now)
+    max_attendees = models.PositiveIntegerField()
+    registered_attendees = models.PositiveIntegerField(default=0) # Amount of people that are already joined in
+    time_range = models.DurationField()  # Save for example "1:30:00" for 1h 30min
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    recipe = models.ForeignKey(Recipe, related_name='events', on_delete=models.CASCADE)
