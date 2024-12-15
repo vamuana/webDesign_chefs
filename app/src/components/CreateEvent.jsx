@@ -5,12 +5,23 @@ import { Link } from 'react-router-dom';
 
 //These methods will create the event and push it to database
 export default function CreateEvent() {
+    const now = new Date();
+    const today = now.toISOString().split('T')[0];
+    const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000)
+        .toTimeString()
+        .split(' ')[0]
+        .slice(0, 5);
+    const twoHoursFromNow = new Date(now.getTime() + 2 * 60 * 60 * 1000)
+        .toTimeString()
+        .split(' ')[0]
+        .slice(0, 5);
+
     const [selectedRecipe, setSelectedRecipe] = useState(null);
     const [eventDetails, setEventDetails] = useState({
-        date: '',
+        date: today,
         maxAttendees: '',
-        timeRange: { start: '', end: '' },
-        estimatedPrice: ''
+        timeRange: { start: oneHourFromNow, end: twoHoursFromNow },
+        estimatedPrice: '',
     });
     const [isEventCreated, setIsEventCreated] = useState(false);
     const [formError, setFormError] = useState(null);
@@ -178,7 +189,7 @@ export default function CreateEvent() {
                             {formError && <p className="text-red-500 mb-4">{formError}</p>}
                             <form className="space-y-6">
                                 <div>
-                                    <label htmlFor="date" className="block font-medium text-gray-700">Date</label>
+                                    <label htmlFor="date" className="block font-medium text-gray-700">Event Date</label>
                                     <input
                                         type="date"
                                         id="date"
@@ -201,7 +212,7 @@ export default function CreateEvent() {
                                 </div>
 
                                 <div>
-                                    <label htmlFor="time-range" className="block font-medium text-gray-700">Time Range</label>
+                                    <label htmlFor="time-range" className="block font-medium text-gray-700">Event Time Range</label>
                                     <div className="flex space-x-4">
                                         <input
                                             type="time"
