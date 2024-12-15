@@ -120,37 +120,56 @@ export default function CreateEvent() {
         return true;
     };
 
-    const handleCreateEvent = () => {
+    const handleCreateEvent = async () => {
         if (!validateForm()) {
-            return;
+          return;
         }
-
+      
+        // Výpočet trvania v minútach
+        const startTime = new Date(`1970-01-01T${eventDetails.timeRange.start}:00`);
+        const endTime = new Date(`1970-01-01T${eventDetails.timeRange.end}:00`);
+        const durationMs = endTime - startTime;
+      
+        // Konverzia na HH:MM:SS
+        const hours = Math.floor(durationMs / (1000 * 60 * 60));
+        const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+        const duration = `${hours}:${minutes}:00`;
+      
         const eventData = {
-            recipeId: selectedRecipe,
-            ...eventDetails,
+          date: eventDetails.date,
+          max_attendees: parseInt(eventDetails.maxAttendees, 10),
+          registered_attendees: 0,  // Predvolená hodnota
+          time_range: duration,  // Trvanie v HH:MM:SS
+          price: parseFloat(eventDetails.estimatedPrice),
+          recipe: selectedRecipe,  // ID receptu
         };
-
-        // For local storage or state update
-        console.log('Event Data (local):', eventData);
-
-        // Uncomment the code below when integrating with the backend
-        // fetch('https://your-backend-api/events', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(eventData),
-        // })
-        // .then((response) => response.json())
-        // .then((data) => {
-        //     console.log('Event successfully saved to database:', data);
-        // })
-        // .catch((error) => {
-        //     console.error('Error saving event:', error);
-        // });
-
-        setIsEventCreated(true);
-    };
+      
+        try {
+          const response = await fetch("http://127.0.0.1:8000/api/create-event/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(eventData),
+          });
+      
+          if (!response.ok) {
+            const errorData = await response.json();
+            setFormError(`Error: ${errorData.details || "Something went wrong!"}`);
+            console.error("Error data:", errorData);
+            return;
+          }
+      
+          const result = await response.json();
+          console.log("Event created successfully:", result);
+      
+          setIsEventCreated(true);
+        } catch (error) {
+          console.error("Error creating event:", error);
+          setFormError("Failed to create the event!");
+        }
+      };      
+      
 
     return (
         <div className="min-h-screen bg-gray-100">

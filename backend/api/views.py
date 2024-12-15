@@ -100,7 +100,7 @@ class RecipeCreateView(APIView):
         secondary_description = data.get('secondary_description', '')
         image = request.FILES.get('image', None)
         print("Uploaded image:", image)
-        
+
         # Extrahovanie ingrediencií
         ingredients_data = []
         for key, value in data.items():
@@ -141,6 +141,7 @@ class EventsView(generics.ListAPIView):
 
 class EventCreateView(APIView):
     def post(self, request, format=None):
+        print("Received data:", request.data)
         serializer = EventSerializer(data=request.data)
         
         if serializer.is_valid():
