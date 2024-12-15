@@ -25,6 +25,7 @@ const RecipeForm = () => {
   const [isHovered, setIsHovered] = useState(false);
   const fileInputRef = useRef(null);
   const [formError, setFormError] = useState(null);
+  const [preview, setPreview] = useState(null);  // for the image preview
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,7 +50,8 @@ const RecipeForm = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setRecipe((prev) => ({ ...prev, photo: URL.createObjectURL(file) }));
+      setRecipe((prev) => ({ ...prev, photo: file }));  // Uloží skutočný súbor
+      setPreview(URL.createObjectURL(file)); // image preview
     }
   };
 
@@ -60,75 +62,90 @@ const RecipeForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
   
     if (!recipe.name) {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
       setFormError("Please enter the recipe name!");
-      setTimeout(() => setError(null), 3000);
+      scrollToTop();
       return;
     }
   
     if (recipe.ingredients.length === 0 || recipe.ingredients.some((ingredient) => !ingredient)) {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
       setFormError("Please add at least one ingredient!");
+      scrollToTop();
       return;
     }
   
     if (!recipe.description) {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
       setFormError("Please enter the recipe description!");
+      scrollToTop();
       return;
     }
   
     if (!recipe.directions) {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
       setFormError("Please enter the recipe directions!");
+      scrollToTop();
       return;
     }
-    if (!recipe.name || recipe.ingredients.length === 0 || !recipe.description || !recipe.directions) {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
+  
+    try {
+      const formData = new FormData();
+      formData.append("title", recipe.name);
+      formData.append("description", recipe.description);
+      formData.append("secondary_description", recipe.directions);
+  
+      recipe.ingredients.forEach((ingredient, index) => {
+        formData.append(`ingredients[${index}][name]`, ingredient);
       });
-      setFormError("Please fill in all fields!");
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
+  
+      if (recipe.photo) {
+        formData.append("image", recipe.photo);
+      }
+  
+      const response = await fetch("http://127.0.0.1:8000/api/create-recipe/", {
+        method: "POST",
+        body: formData,
       });
-    } else {
-      setFormError(null);
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        setFormError(`Error: ${errorData.error || "Something went wrong!"}`);
+        scrollToTop();
+        return;
+      }
+  
       setSuccessMsg(`Recipe "${recipe.name}" created successfully!`);
       setTimeout(() => setSuccessMsg(null), 4000);
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-      setRecipe({
-        name: '',
-        ingredients: [''],
-        description: '',
-        directions: '',
-        photo: null,
-      });
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
+  
+      resetForm();
+    } catch (error) {
+      console.error("Error:", error);
+      setFormError("Failed to create the recipe!");
+      scrollToTop();
     }
   };
+  
+  const resetForm = () => {
+    setRecipe({
+      name: "",
+      ingredients: [""],
+      description: "",
+      directions: "",
+      photo: null,
+    });
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+  
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+  
 
   return (
     <Box>
@@ -196,7 +213,7 @@ const RecipeForm = () => {
                 onMouseLeave={() => setIsHovered(false)}
               >
                 <img
-                  src={recipe.photo}
+                  src={preview}
                   alt="Recipe Preview"
                   style={{
                     width: '100%',

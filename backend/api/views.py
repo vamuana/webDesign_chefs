@@ -98,16 +98,25 @@ class RecipeCreateView(APIView):
         title = data.get('title')
         description = data.get('description')
         secondary_description = data.get('secondary_description', '')
-        ingredients_data = data.get('ingredients', [])
         image = request.FILES.get('image', None)
+        print("Uploaded image:", image)
+        
+        # Extrahovanie ingrediencií
+        ingredients_data = []
+        for key, value in data.items():
+            if key.startswith('ingredients[') and key.endswith('][name]'):
+                ingredients_data.append({'name': value})
+
+        print("Extracted ingredients:", ingredients_data)
+        print("data", data)
 
         if not title or not description or not ingredients_data:
+            print('Ingredients error')
             return Response(
                 {"error": "Title, description, and at least one ingredient are required."}, 
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # Vytvorenie receptu
         recipe = Recipe.objects.create(
             title=title,
             description=description,
@@ -115,7 +124,6 @@ class RecipeCreateView(APIView):
             image=image
         )
 
-        # Pridanie ingrediencií
         for ingredient in ingredients_data:
             ingredient_obj, created = Ingredient.objects.get_or_create(name=ingredient['name'])
             recipe.ingredients.add(ingredient_obj)
@@ -124,6 +132,7 @@ class RecipeCreateView(APIView):
 
         serializer = RecipeSerializer(recipe)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     
 # Events 
 class EventsView(generics.ListAPIView):
