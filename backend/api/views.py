@@ -162,16 +162,24 @@ class EventJoinView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
+        user = request.user
+        if event.joined_users.filter(id=user.id).exists():
+            return Response(
+                {"error": "You are already registered for this event"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         if event.registered_attendees >= event.max_attendees:
             return Response(
                 {"error": "The event is already full"}, 
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        event.joined_users.add(user)
         event.registered_attendees += 1
         event.save()
 
-        serializer = EventSerializer(event)
+        serializer = EventDetailSerializer(event)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class EventLeaveView(APIView):
@@ -184,14 +192,16 @@ class EventLeaveView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        if event.registered_attendees <= 0:
+        user = request.user
+        if not event.joined_users.filter(id=user.id).exists():
             return Response(
-                {"error": "No attendees to remove"}, 
+                {"error": "You are not registered for this event"}, 
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        event.joined_users.remove(user)
         event.registered_attendees -= 1
         event.save()
 
-        serializer = EventSerializer(event)
+        serializer = EventDetailSerializer(event)
         return Response(serializer.data, status=status.HTTP_200_OK)

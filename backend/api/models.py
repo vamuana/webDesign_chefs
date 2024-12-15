@@ -28,3 +28,4 @@ class Event(models.Model):
     time_range = models.DurationField()  # Save for example "1:30:00" for 1h 30min
     price = models.DecimalField(max_digits=10, decimal_places=2)
     recipe = models.ForeignKey(Recipe, related_name='events', on_delete=models.CASCADE)
+    joined_users = models.ManyToManyField(User, related_name='joined_events', blank=True)
