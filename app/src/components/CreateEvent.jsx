@@ -3,48 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
 
-//I used mock database so it will be easier to integrate it with backend later on
-const mockDatabase = {
-    recipes: [
-        {
-            id: 1,
-            name: "Fluffy Pancakes",
-            image: "/src/assets/pancakes.png",
-            description: "Cooked 3x • Avg Time: 45 min",
-        },
-        {
-            id: 2,
-            name: "Cheesy Pasta",
-            image: "/src/assets/pasta.jpg",
-            description: "Cooked 2x • Avg Time: 1h 45min",
-        },
-        {
-            id: 3,
-            name: "Chicken Salad",
-            image: "/src/assets/chickensalad.jpg",
-            description: "Cooked 1x • Avg Time: 25 min",
-        },
-        {
-            id: 4,
-            name: "Tomato Soup",
-            image: "/src/assets/tomatessoup.jpg",
-            description: "Cooked 4x • Avg Time: 30 min",
-        },
-        {
-            id: 5,
-            name: "Fried Chicken",
-            image: "/src/assets/friedchicken.jpg",
-            description: "Cooked 2x • Avg Time: 50 min",
-        },
-        {
-            id: 6,
-            name: "Fish bites",
-            image: "/src/assets/fishbites.jpg",
-            description: "Cooked 5x • Avg Time: 15 min",
-        },
-    ],
-};
-
 //These methods will create the event and push it to database
 export default function CreateEvent() {
     const [selectedRecipe, setSelectedRecipe] = useState(null);
@@ -125,12 +83,10 @@ export default function CreateEvent() {
           return;
         }
       
-        // Výpočet trvania v minútach
         const startTime = new Date(`1970-01-01T${eventDetails.timeRange.start}:00`);
         const endTime = new Date(`1970-01-01T${eventDetails.timeRange.end}:00`);
         const durationMs = endTime - startTime;
       
-        // Konverzia na HH:MM:SS
         const hours = Math.floor(durationMs / (1000 * 60 * 60));
         const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
         const duration = `${hours}:${minutes}:00`;
@@ -138,10 +94,10 @@ export default function CreateEvent() {
         const eventData = {
           date: eventDetails.date,
           max_attendees: parseInt(eventDetails.maxAttendees, 10),
-          registered_attendees: 0,  // Predvolená hodnota
-          time_range: duration,  // Trvanie v HH:MM:SS
+          registered_attendees: 0,
+          time_range: duration,
           price: parseFloat(eventDetails.estimatedPrice),
-          recipe: selectedRecipe,  // ID receptu
+          recipe: selectedRecipe,
         };
       
         try {
