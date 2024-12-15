@@ -74,7 +74,7 @@ export default function JoinEventPage() {
               return event.date >= currentDate;
             });
             
-            setEvents(upcomingEvents);  // Aktualizácia stavu
+            setEvents(upcomingEvents);
           } catch (error) {
             console.error("Error fetching events:", error);
           }
