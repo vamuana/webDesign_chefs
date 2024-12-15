@@ -137,7 +137,7 @@ class RecipeCreateView(APIView):
 # Events 
 class EventsView(generics.ListAPIView):
     queryset = Event.objects.all()
-    serializer_class = EventSerializer
+    serializer_class = EventDetailSerializer
 
 class EventCreateView(APIView):
     def post(self, request, format=None):

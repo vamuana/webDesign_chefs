@@ -32,3 +32,14 @@ class EventSerializer(serializers.ModelSerializer):
             'registered_attendees', 'time_range', 
             'price', 'recipe'
         ]
+
+class EventDetailSerializer(serializers.ModelSerializer):
+    recipe = RecipeSerializer(read_only=True)
+
+    class Meta:
+        model = Event
+        fields = [
+            'id', 'date', 'max_attendees', 
+            'registered_attendees', 'time_range', 
+            'price', 'recipe'
+        ]
