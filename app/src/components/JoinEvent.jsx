@@ -1,54 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 
-// Mock database, we will then do this with real one
-const mockDatabase = {
-    events: [
-        {
-            id: 1,
-            title: "Fluffy pancakes",
-            organizer: "MonikaCooks",
-            attendees: "1",
-            maxpeople:"4",
-            cookingTime: "45 min",
-            date: "20.10.2024",
-            time: "18:00-20:00",
-            location: "Manželské internáty",
-            rating: 5,
-            reviews: 3,
-            image: "/src/assets/pancakes.png",
-        },
-        {
-            id: 2,
-            title: "Vegetable ragu",
-            organizer: "dominique321",
-            attendees: "2",
-            maxpeople:"3",
-            cookingTime: "1h 45min",
-            date: "20.10.2024",
-            time: "19:00-22:00",
-            location: "Štúrak",
-            rating: 4,
-            reviews: 1,
-            image: "/src/assets/ragu.jpg",
-        },
-        {
-            id: 3,
-            title: "Spinach rice bowl",
-            organizer: "martyn",
-            attendees: "1",
-            maxpeople:"2",
-            cookingTime: "55 min",
-            date: "20.10.2024",
-            time: "20:00-23:59",
-            location: "Átriáky",
-            rating: 4.5,
-            reviews: 6,
-            image: "/src/assets/ricebowl.jpg",
-        },
-    ],
-};
-
 export default function JoinEventPage() {
     const [events, setEvents] = useState([]);
     const [filters, setFilters] = useState({
