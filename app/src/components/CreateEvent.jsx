@@ -57,6 +57,7 @@ export default function CreateEvent() {
     const [isEventCreated, setIsEventCreated] = useState(false);
     const [formError, setFormError] = useState(null);
     const navigate = useNavigate();
+    const [recipes, setRecipes] = useState([]);
 
     useEffect(() => {
         if (isEventCreated) {
@@ -67,6 +68,23 @@ export default function CreateEvent() {
             return () => clearTimeout(timer);
         }
     }, [isEventCreated, navigate]);
+
+    useEffect(() => {
+        const fetchRecipes = async () => {
+          try {
+            const response = await fetch("http://127.0.0.1:8000/api/recipes/");
+            if (!response.ok) {
+              throw new Error("Failed to fetch recipes");
+            }
+            const data = await response.json();
+            setRecipes(data);  // Aktualizácia stavu receptov
+          } catch (error) {
+            console.error("Error fetching recipes:", error);
+          }
+        };
+      
+        fetchRecipes();
+      }, []);
 
     const handleSelectRecipe = (id) => {
         setSelectedRecipe(id);
@@ -158,19 +176,23 @@ export default function CreateEvent() {
                             </Link>
                         </div>
                         <div className="grid grid-cols-2 gap-6 overflow-y-auto flex-1">
-                            {mockDatabase.recipes.map((recipe) => (
-                                <div
-                                    key={recipe.id}
-                                    className={`bg-white shadow-md rounded-lg p-4 border transition ${
-                                        selectedRecipe === recipe.id ? 'border-[#F4B18C] border-4' : 'hover:border-green-600'
-                                    }`}
-                                    onClick={() => handleSelectRecipe(recipe.id)}
-                                >
-                                    <img src={recipe.image} alt={recipe.name} className="rounded-lg mb-4 object-cover h-32 w-full" />
-                                    <h3 className="text-lg font-semibold text-green-700">{recipe.name}</h3>
-                                    <p className="text-gray-600 text-sm">{recipe.description}</p>
-                                </div>
-                            ))}
+                        {recipes.map((recipe) => (
+                            <div
+                            key={recipe.id}
+                            className={`bg-white shadow-md rounded-lg p-4 border transition ${
+                                selectedRecipe === recipe.id ? 'border-[#F4B18C] border-4' : 'hover:border-green-600'
+                            }`}
+                            onClick={() => handleSelectRecipe(recipe.id)}
+                            >
+                            <img
+                                src={recipe.image}
+                                alt={recipe.title}
+                                className="rounded-lg mb-4 object-cover h-32 w-full"
+                            />
+                            <h3 className="text-lg font-semibold text-green-700">{recipe.title}</h3>
+                            <p className="text-gray-600 text-sm">{recipe.description}</p>
+                            </div>
+                        ))}
                         </div>
                     </section>
 
