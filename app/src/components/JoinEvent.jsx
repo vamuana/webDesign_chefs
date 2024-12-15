@@ -68,18 +68,12 @@ export default function JoinEventPage() {
             }
             const data = await response.json();
       
-            console.log("Fetched Events:", data);  // Výpis eventov pred filtrovaním
       
-            const currentDate = new Date().toISOString().split("T")[0]; 
-            console.log("Current Date:", currentDate);  // Aktuálny dátum na porovnanie
-      
+            const currentDate = new Date().toISOString().split("T")[0];       
             const upcomingEvents = data.filter((event) => {
-              console.log("Comparing:", event.date, ">=", currentDate);
               return event.date >= currentDate;
             });
-      
-            console.log("Upcoming Events:", upcomingEvents);  // Výpis filtrovaných eventov
-      
+            
             setEvents(upcomingEvents);  // Aktualizácia stavu
           } catch (error) {
             console.error("Error fetching events:", error);
