@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
+import { useSelector, shallowEqual } from 'react-redux';
 
 //These methods will create the event and push it to database
 export default function CreateEvent() {
+    const [isLoggedIn] = useSelector((state) => [state.global.isLoggedIn], shallowEqual);
     const [selectedRecipe, setSelectedRecipe] = useState(null);
     const [eventDetails, setEventDetails] = useState({
         date: '',
@@ -234,13 +236,19 @@ export default function CreateEvent() {
                                 </div>
                             </form>
                         </div>
-                        <button
-                            type="button"
-                            onClick={handleCreateEvent}
-                            className="w-full bg-green-700 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-600"
-                        >
-                            Create Event
-                        </button>
+                        {isLoggedIn ? (
+                            <button
+                                type="button"
+                                onClick={handleCreateEvent}
+                                className="w-full bg-green-700 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-600"
+                            >
+                                Create Event
+                            </button>
+                        ) : (
+                            <p className="text-red-600 font-bold text-center mt-4 border-2 border-red-500 p-4 rounded-lg">
+                                You need to log in to create an event!
+                            </p>
+                        )}
                     </section>
                 </main>
             )}

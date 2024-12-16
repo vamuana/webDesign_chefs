@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import Alert from './Alert';
 import Success from './Success';
 import { useNavigate } from 'react-router-dom';
-import { SET_LOGGED_IN, SET_NAME } from '../redux/actions/action';
+import { SET_LOGGED_IN, SET_NAME, SET_USER_ID } from '../redux/actions/action';
 
 export default function Login() {
   // variables
@@ -35,36 +35,50 @@ export default function Login() {
 
   const handleLogin = async () => {
     const uploadData = new FormData();
-    uploadData.append('username', name);
-    uploadData.append('password', password);
-    fetch("http://127.0.0.1:8000/api/authenticate/", {
-        method: 'POST',
-        body: uploadData
-    })
-    .then((response) => { 
-        if (response.ok) {
-            console.log("Logged in successfully!");
-            dispatch({type: SET_LOGGED_IN, value: true});
-            dispatch({type: SET_NAME, value: name});
-            setSuccessMsg("Logged in successfully!");
-            navigate("/");
-        } else {
-            setError("Wrong credentials!");
-            setTimeout(() => {
-                setError(null);
-              }, 3000);
-        }
+    uploadData.append("username", name);
+    uploadData.append("password", password);
+  
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/authenticate/", {
+        method: "POST",
+        body: uploadData,
+      });
+  
+      if (!response.ok) {
+        setError("Wrong credentials!");
+        setTimeout(() => setError(null), 3000);
         setName("");
         setPassword("");
-        return response.json();
-    })
-    .then((data) => { 
-        console.log("Response data: ", data);
-    })
-    .catch((error) => {
-        console.log("ERROR");
-        console.error(error);
-    });
+        return;
+      }
+  
+      const authData = await response.json();
+      console.log("Logged in successfully!", authData);
+  
+      const userResponse = await fetch("http://127.0.0.1:8000/api/users/"); // for setting up the ID since the backend is not returning anything (security)
+      if (!userResponse.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+  
+      const users = await userResponse.json();
+      const currentUser = users.find((user) => user.username === name);
+  
+      if (currentUser) { // rather to have that check
+        dispatch({ type: SET_USER_ID, value: currentUser.id });
+      }
+  
+      dispatch({ type: SET_LOGGED_IN, value: true });
+      dispatch({ type: SET_NAME, value: name });
+  
+      setSuccessMsg("Logged in successfully!");
+      navigate("/");
+    } catch (error) {
+      console.error("Error during login:", error);
+      setError("Error occurred while logging in.");
+    } finally {
+      setName("");
+      setPassword("");
+    }
   };
 
   const getLoginButton = () => {

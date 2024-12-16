@@ -4,6 +4,7 @@ export const getDefaultGlobalStructure = () => {
     return {
         isLoggedIn:false,
         name:null,
+        userId:null,
     }
 }
 

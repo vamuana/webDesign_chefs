@@ -162,7 +162,21 @@ class EventJoinView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        user = request.user
+        username = request.data.get('username')
+        if not username:
+            return Response(
+                {"error": "Missing username in request"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return Response(
+                {"error": "User not found"}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+
         if event.joined_users.filter(id=user.id).exists():
             return Response(
                 {"error": "You are already registered for this event"}, 
@@ -192,7 +206,21 @@ class EventLeaveView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        user = request.user
+        username = request.data.get('username')
+        if not username:
+            return Response(
+                {"error": "Missing username in request"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return Response(
+                {"error": "User not found"}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+
         if not event.joined_users.filter(id=user.id).exists():
             return Response(
                 {"error": "You are not registered for this event"}, 
