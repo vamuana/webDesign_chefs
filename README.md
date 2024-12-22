@@ -88,6 +88,7 @@ Opportunities for our App
   - Set up user profile
   - create the cooking event for others to join - place there an offer of an exact meal they want to cookvand the time frame they are available
   - add a predicted budget of that exact meal per portion
+	- use recipes already created by other users
   - join the cooking event somebody else created
   - preview user that created a cooking event, his history what he already cooked or joined
   - Rate the recipie and the main chef and participating chefs (star rating and optional text feedback)
@@ -140,14 +141,14 @@ Schedule:
   - Updated specs submission: 24 Nov 2024
   - Testing session: 11 Dec 2024
   - Submission: 15 Dec 2024
-  - Team review: 18 Dec 2024
+  - Team review: 19 Dec 2024
 
     Round 3: App Version 2 (75 Hours)
   - 10.12. - 17.12. Writing specification vol 3
   - 18.12. - 10.1. Testing - internally
   - Updated specs submission: 22 Dec 2024
-  - Submission: 18 Jan 2024
-  - Team review: 21 Jan 2024
+  - Submission: 31 Jan 2024
+  - Team review: 5 Feb 2024
 
 ####  Split of responsibilities in your team:
   - Vanesa - Operator
