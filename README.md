@@ -145,7 +145,7 @@ Schedule:
 
     Round 3: App Version 2 (75 Hours)
   - 10.12. - 17.12. Writing specification vol 3
-  - 18.12. - 10.1. Testing - internally
+  - 18.12. - 30.1. Testing - internally
   - Updated specs submission: 22 Dec 2024
   - Submission: 31 Jan 2024
   - Team review: 5 Feb 2024
