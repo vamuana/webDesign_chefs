@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NavBar from './Navbar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -27,6 +28,7 @@ const RecipeForm = () => {
   const fileInputRef = useRef(null);
   const [formError, setFormError] = useState(null);
   const [preview, setPreview] = useState(null);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -166,6 +168,12 @@ const RecipeForm = () => {
             >
               Next
             </Button>
+            <button
+                onClick={() => navigate('/create-event')}
+                className="w-full mt-4 bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-500"
+            >
+                Back to Event creation page
+            </button>
           </Box>
         );
       case 2:
@@ -247,6 +255,12 @@ const RecipeForm = () => {
                 Next
               </Button>
             </Box>
+            <button
+                onClick={() => navigate('/create-event')}
+                className="w-full mt-4 bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-500"
+            >
+                Back to Event creation page
+            </button>
           </Box>
         );
       case 3:
@@ -314,6 +328,12 @@ const RecipeForm = () => {
                 Next
               </Button>
             </Box>
+            <button
+                onClick={() => navigate('/create-event')}
+                className="w-full mt-4 bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-500"
+            >
+                Back to Event creation page
+            </button>
           </Box>
         );
       case 4:
@@ -373,6 +393,12 @@ const RecipeForm = () => {
                 Save Recipe
               </Button>
             </Box>
+            <button
+                onClick={() => navigate('/create-event')}
+                className="w-full mt-4 bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-500"
+            >
+                Back to Event creation page
+            </button>
           </Box>
         );
       default:
