@@ -5,6 +5,7 @@ import { useSelector, shallowEqual } from 'react-redux';
 
 function RecipeModal({ recipes, onRecipeSelect, searchQuery, setSearchQuery, onClose }) {
     const [filteredRecipes, setFilteredRecipes] = useState(recipes);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const lowerCaseQuery = searchQuery.toLowerCase();
@@ -187,7 +188,7 @@ export default function CreateEvent() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-gradient-to-b from-gray-100 via-gray-200 to-gray-300">
             <Navbar />
             <div className="max-w-7xl mx-auto px-4 py-4">
                 <h1 className="text-2xl font-bold text-green-800">Create Your Event</h1>
@@ -212,7 +213,7 @@ export default function CreateEvent() {
                         </ul>
                     </section>
 
-                    <section className="flex flex-col items-center bg-white py-4 rounded-lg shadow-md">
+                    <section className="flex flex-col items-center bg-white py-6 rounded-lg shadow-md">
                         <button
                             className="bg-green-700 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-600 mb-4"
                             onClick={() => setShowModal(true)}
@@ -224,12 +225,12 @@ export default function CreateEvent() {
                         )}
                     </section>
 
-                    <section className="bg-white p-6 rounded-lg shadow-md">
+                    <section className="bg-gradient-to-r from-white to-green-50 p-6 rounded-lg shadow-md">
                         <h2 className="text-xl font-semibold text-green-700 mb-4">Event Details</h2>
                         {formError && <p className="text-red-500 mb-4">{formError}</p>}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label htmlFor="date" className="block text-gray-700 font-medium mb-2">Date</label>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="bg-green-50 p-4 rounded-lg shadow-md">
+                                <label htmlFor="date" className="block text-gray-700 font-medium mb-2">📅 Date</label>
                                 <input
                                     type="date"
                                     id="date"
@@ -238,8 +239,8 @@ export default function CreateEvent() {
                                     className="w-full border rounded-lg p-3 focus:ring-green-500 focus:border-green-500"
                                 />
                             </div>
-                            <div>
-                                <label htmlFor="maxAttendees" className="block text-gray-700 font-medium mb-2">Max Attendees</label>
+                            <div className="bg-green-50 p-4 rounded-lg shadow-md">
+                                <label htmlFor="maxAttendees" className="block text-gray-700 font-medium mb-2">👥 Max Attendees</label>
                                 <input
                                     type="number"
                                     id="maxAttendees"
@@ -248,8 +249,8 @@ export default function CreateEvent() {
                                     className="w-full border rounded-lg p-3 focus:ring-green-500 focus:border-green-500"
                                 />
                             </div>
-                            <div className="col-span-2">
-                                <label className="block text-gray-700 font-medium mb-2">Time Range</label>
+                            <div className="bg-green-50 p-4 rounded-lg shadow-md col-span-2">
+                                <label className="block text-gray-700 font-medium mb-2">⏰ Time Range</label>
                                 <div className="flex space-x-4">
                                     <input
                                         type="time"
@@ -268,8 +269,8 @@ export default function CreateEvent() {
                                     />
                                 </div>
                             </div>
-                            <div className="col-span-2">
-                                <label htmlFor="estimatedPrice" className="block text-gray-700 font-medium mb-2">Estimated Price (€)</label>
+                            <div className="bg-green-50 p-4 rounded-lg shadow-md col-span-2">
+                                <label htmlFor="estimatedPrice" className="block text-gray-700 font-medium mb-2">💵 Estimated Price (€)</label>
                                 <input
                                     type="number"
                                     id="estimatedPrice"
@@ -284,7 +285,7 @@ export default function CreateEvent() {
                             <button
                                 type="button"
                                 onClick={handleCreateEvent}
-                                className="w-full mt-6 bg-green-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600"
+                                className="w-full mt-6 bg-green-700 text-white font-semibold py-3 px-4 rounded-lg hover:bg-green-600"
                             >
                                 Create Event
                             </button>
@@ -295,7 +296,7 @@ export default function CreateEvent() {
                         )}
                         <button
                             onClick={() => navigate('/')}
-                            className="w-full mt-4 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-500"
+                            className="w-full mt-4 bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-500"
                         >
                             Back to Homepage
                         </button>
