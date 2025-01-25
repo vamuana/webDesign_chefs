@@ -20,35 +20,49 @@ function RecipeModal({ recipes, onRecipeSelect, searchQuery, setSearchQuery, onC
         setFilteredRecipes(filtered);
     }, [searchQuery, recipes]);
 
+    useEffect(() => {
+        const handleEsc = (event) => {
+            if (event.key === 'Escape') {
+                onClose();
+            }
+        };
+        window.addEventListener('keydown', handleEsc);
+        return () => {
+            window.removeEventListener('keydown', handleEsc);
+        };
+    }, [onClose]);
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white w-3/4 max-w-4xl p-6 rounded-lg shadow-lg relative">
+            <div className="bg-white w-3/4 max-w-4xl p-6 rounded-lg shadow-lg relative" style={{ marginTop: '110px', zIndex: 60 }}>
                 <button
                     className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
                     onClick={onClose}
                 >
                     ✕
                 </button>
-                <h2 className="text-xl font-semibold text-green-700 mb-4">Select a Recipe</h2>
-                <div className="flex items-center justify-between mb-6">
-                    <input
-                        type="text"
-                        placeholder="Search by title, description, or ingredients..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="flex-grow border rounded-lg p-3 focus:ring-green-500 focus:border-green-500 mr-4"
-                    />
-                    <button
-                        className="bg-green-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600"
-                        onClick={() => {
-                            onClose();
-                            navigate('/create-recipe');
-                        }}
-                    >
-                        + New Recipe
-                    </button>
+                <h2 className="text-xl font-semibold text-green-700 mb-6">Select a Recipe</h2>
+                <div className="mb-6">
+                    <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+                        <input
+                            type="text"
+                            placeholder="Search by title, description, or ingredients..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="flex-grow border rounded-lg p-3 focus:ring-green-500 focus:border-green-500 sm:mr-4"
+                        />
+                        <button
+                            className="bg-green-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600"
+                            onClick={() => {
+                                onClose();
+                                navigate('/create-recipe');
+                            }}
+                        >
+                            + New Recipe
+                        </button>
+                    </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 overflow-y-auto max-h-[500px]">
                     {filteredRecipes.map((recipe) => (
                         <div
                             key={recipe.id}
