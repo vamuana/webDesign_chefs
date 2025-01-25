@@ -212,7 +212,7 @@ export default function CreateEvent() {
                     <div className="text-center">
                         <div className="text-green-500 text-6xl mb-4">✔</div>
                         <h1 className="text-2xl font-bold">Event created successfully!</h1>
-                        <p className="text-gray-600 mt-2">You will be notified once somebody wants to join it.</p>
+                        <p className="text-gray-600 mt-2">You will be redirected to the main menu.</p>
                     </div>
                 </div>
             ) : (

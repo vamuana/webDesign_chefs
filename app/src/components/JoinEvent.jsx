@@ -4,6 +4,98 @@ import Navbar from './Navbar';
 import Alert from './Alert';
 import Success from './Success';
 
+function EventDetailsModal({ event, onClose }) {
+  const [joinedUsernames, setJoinedUsernames] = useState([]);
+
+  useEffect(() => {
+    const fetchUsernames = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/users/');
+        if (!response.ok) throw new Error('Failed to fetch usernames');
+        const users = await response.json();
+
+        const usernames = event.joined_users.map(
+          (userId) => users.find((user) => user.id === userId)?.username || `User ${userId}`
+        );
+
+        setJoinedUsernames(usernames);
+      } catch (error) {
+        console.error('Error fetching usernames:', error);
+      }
+    };
+
+    fetchUsernames();
+  }, [event]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
+  if (!event) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white w-3/4 max-w-4xl p-6 rounded-lg shadow-lg relative">
+        <button
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
+          onClick={onClose}
+        >
+          ✕
+        </button>
+        <h2 className="text-2xl font-bold text-green-700 mb-4">Event Details</h2>
+        <img
+          src={event.recipe.image || 'https://via.placeholder.com/150'}
+          alt={event.recipe.title}
+          className="w-full h-64 object-cover rounded-lg mb-4"
+        />
+        <h3 className="text-xl font-semibold text-green-800">{event.recipe.title}</h3>
+        <p className="text-gray-700 mb-2">{event.recipe.description}</p>
+        <p className="text-gray-600 mb-4">{event.recipe.secondary_description}</p>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <p className="text-sm font-medium text-gray-700">📅 Date:</p>
+            <p className="text-lg text-gray-800">{event.date}</p>
+          </div>
+          <div>
+            <p className="text-sm font-medium text-gray-700">⏳ Duration:</p>
+            <p className="text-lg text-gray-800">{event.time_range}</p>
+          </div>
+          <div>
+            <p className="text-sm font-medium text-gray-700">👥 Max Attendees:</p>
+            <p className="text-lg text-gray-800">{event.max_attendees}</p>
+          </div>
+          <div>
+            <p className="text-sm font-medium text-gray-700">💵 Price:</p>
+            <p className="text-lg text-gray-800">€{event.price}</p>
+          </div>
+        </div>
+        <div className="mt-6">
+          <h4 className="text-lg font-medium text-green-700">Ingredients:</h4>
+          <ul className="list-disc list-inside text-gray-800">
+            {event.recipe.ingredients.map((ingredient) => (
+              <li key={ingredient.id}>{ingredient.name}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="mt-6">
+          <h4 className="text-lg font-medium text-green-700">Joined Users:</h4>
+          <p className="text-gray-800">
+            {joinedUsernames.length > 0 ? joinedUsernames.join(', ') : 'No users have joined yet.'}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function JoinEventPage() {
   const [isLoggedIn] = useSelector((state) => [state.global.isLoggedIn], shallowEqual);
   const [userName] = useSelector((state) => [state.global.name], shallowEqual);
@@ -17,6 +109,7 @@ export default function JoinEventPage() {
     search: '',
     date: ''
   });
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -174,16 +267,23 @@ export default function JoinEventPage() {
           {filteredEvents.map((event) => (
             <div key={event.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-200">
               <img
-                src={event.recipe.image}
+                src={event.recipe.image || 'https://via.placeholder.com/150'}
                 alt={event.recipe.title}
                 className="rounded-lg object-cover h-40 w-full mb-4"
               />
               <h2 className="text-lg font-semibold text-green-700 mb-2">{event.recipe.title}</h2>
               <p className="text-gray-600 mb-2">{event.recipe.description}</p>
               <p className="text-sm text-gray-500 mb-1">📅 Date: {event.date}</p>
-              <p className="text-sm text-gray-500 mb-4">👥 Max Attendees: {event.max_attendees} | Registered: {event.registered_attendees}</p>
+              <p className="text-sm text-gray-500 mb-4">
+                👥 Max Attendees: {event.max_attendees} | Registered: {event.registered_attendees}
+              </p>
               <div className="flex justify-between">
-                <button className="text-green-700 font-semibold hover:underline">More Info</button>
+                <button
+                  className="text-green-700 font-semibold hover:underline"
+                  onClick={() => setSelectedEvent(event)}
+                >
+                  More Info
+                </button>
                 {isLoggedIn && (
                   event.joined_users.includes(userId) ? (
                     <button
@@ -205,6 +305,12 @@ export default function JoinEventPage() {
             </div>
           ))}
         </section>
+        {selectedEvent && (
+          <EventDetailsModal
+            event={selectedEvent}
+            onClose={() => setSelectedEvent(null)}
+          />
+        )}
       </main>
     </div>
   );
